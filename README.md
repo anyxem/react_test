@@ -1,5 +1,7 @@
 # Mintlayer react test
 
+https://mntlr-react-app.herokuapp.com/
+
 This repo houses some boilerplate react code - the original repo can be found here https://github.com/react-boilerplate/react-boilerplate
 
 To use this code clone the repo
