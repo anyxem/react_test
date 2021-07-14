@@ -21,6 +21,8 @@ const columns = [
     dataIndex: 'mts',
     key: 'mts',
     render: text => <>{text}</>,
+    sorter: (a, b) => a.mts - b.mts,
+    sortOrder: 'descend',
   },
   {
     title: 'Amount',

@@ -19,25 +19,24 @@ export const bitfinexApi = createApi({
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
       ) {
         // create a websocket connection when the cache subscription starts
-        console.log('awa00');
         const ws = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
-        console.log('awa');
         try {
           // wait for the initial query to resolve before proceeding
-          console.log('1');
           await cacheDataLoaded;
-          console.log('2');
           // when data is received from the socket connection to the server,
           // if it is a message and for the appropriate channel,
           // update our query result with the received message
           const listener = event => {
             const data = JSON.parse(event.data);
-            console.log('dddd', data);
-            if (data.channel !== arg) return;
+            // if (data.channel !== arg) return;
 
-            updateCachedData(draft => {
-              draft.push(data);
-            });
+            if (data[1] === 'hb') return;
+
+            if (data[1] === 'te' || data[1] === 'tu') {
+              updateCachedData(draft => {
+                draft.push(data[2]);
+              });
+            }
           };
 
           const msg = JSON.stringify({

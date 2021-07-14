@@ -11,11 +11,10 @@ export const store = configureStore({
     [bitfinexApi.reducerPath]: bitfinexApi.reducer,
     router: connectRouter(history),
   },
-  middleware: getDefaultMiddleware => {
-    getDefaultMiddleware().concat(routerMiddleware(history));
-    getDefaultMiddleware().concat(bitfinexApi.middleware);
-    return getDefaultMiddleware();
-  },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware()
+      .concat(routerMiddleware(history))
+      .concat(bitfinexApi.middleware),
   devTools: true,
 });
 
