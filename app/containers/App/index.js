@@ -8,10 +8,11 @@
  */
 
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 
 import HomePage from 'containers/HomePage/Loadable';
+import CandlesPage from 'containers/CandlesPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 import GlobalStyle from '../../global-styles';
@@ -24,12 +25,18 @@ export default function App() {
       <Layout className="layout">
         <Header>
           <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-            <Menu.Item key="Home">Home</Menu.Item>
+            <Menu.Item key="Home">
+              <Link to="/">Home</Link>
+            </Menu.Item>
+            <Menu.Item key="candless">
+              <Link to="/candles">Candles</Link>
+            </Menu.Item>
           </Menu>
         </Header>
         <Content style={{ padding: '0 50px' }}>
           <Switch>
             <Route exact path="/" component={HomePage} />
+            <Route exact path="/candles" component={CandlesPage} />
             <Route component={NotFoundPage} />
           </Switch>
         </Content>

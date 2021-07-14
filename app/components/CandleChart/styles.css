@@ -1,0 +1,36 @@
+.chart {
+  background-color: #1f234b;
+  color: white;
+}
+
+.candle {
+  stroke-width: 1;
+}
+
+.candle.up {
+  fill: #81dfc4;
+  stroke: #81dfc4;
+}
+
+.candle.down {
+  fill: #d75b6d;
+  stroke: #d75b6d;
+}
+
+.wick {
+  stroke-width: 1.5;
+}
+
+.wick.up {
+  stroke: #81dfc4;
+}
+
+.wick.down {
+  stroke: #d75b6d;
+}
+
+.cross_hair {
+  stroke: white;
+  stroke-opacity: 70%;
+  stroke-dasharray: 3;
+}
