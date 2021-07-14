@@ -32,7 +32,8 @@ export const bitfinexApi = createApi({
 
             if (data[1] === 'hb') return;
 
-            if (data[1] === 'te' || data[1] === 'tu') {
+            // 'te' to get immediate data
+            if (data[1] === 'te') {
               updateCachedData(draft => {
                 draft.push(data[2]);
               });
