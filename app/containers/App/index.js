@@ -12,7 +12,9 @@ import { Switch, Route, Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 
 import HomePage from 'containers/HomePage/Loadable';
+import BookPage from 'containers/BookPage/Loadable';
 import CandlesPage from 'containers/CandlesPage/Loadable';
+
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 import GlobalStyle from '../../global-styles';
@@ -31,12 +33,16 @@ export default function App() {
             <Menu.Item key="candless">
               <Link to="/candles">Candles</Link>
             </Menu.Item>
+            <Menu.Item key="book">
+              <Link to="/book">Book</Link>
+            </Menu.Item>
           </Menu>
         </Header>
         <Content style={{ padding: '0 50px' }}>
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/candles" component={CandlesPage} />
+            <Route exact path="/book" component={BookPage} />
             <Route component={NotFoundPage} />
           </Switch>
         </Content>
