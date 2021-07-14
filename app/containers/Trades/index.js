@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Table } from 'antd';
 import PropTypes from 'prop-types';
+import format from 'date-fns/format';
+
 import { useGetTradesQuery } from '../../services/bitfinex';
 
 const columns = [
@@ -20,7 +22,7 @@ const columns = [
     title: 'Time',
     dataIndex: 'mts',
     key: 'mts',
-    render: text => <>{text}</>,
+    render: time => <>{format(new Date(time * 1000), 'HH:ii:ss')}</>,
     sorter: (a, b) => a.mts - b.mts,
     sortOrder: 'descend',
   },
