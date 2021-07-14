@@ -12,6 +12,58 @@ export const bitfinexApi = createApi({
     getListPairExchange: builder.query({
       query: () => `conf/pub:list:pair:exchange`,
     }),
+    getTrades: builder.query({
+      query: pair => `trades/t${pair}/hist`,
+      async onCacheEntryAdded(
+        arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
+      ) {
+        // create a websocket connection when the cache subscription starts
+        console.log('awa00');
+        const ws = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
+        console.log('awa');
+        try {
+          // wait for the initial query to resolve before proceeding
+          console.log('1');
+          await cacheDataLoaded;
+          console.log('2');
+          // when data is received from the socket connection to the server,
+          // if it is a message and for the appropriate channel,
+          // update our query result with the received message
+          const listener = event => {
+            const data = JSON.parse(event.data);
+            console.log('dddd', data);
+            if (data.channel !== arg) return;
+
+            updateCachedData(draft => {
+              draft.push(data);
+            });
+          };
+
+          const msg = JSON.stringify({
+            event: 'subscribe',
+            channel: 'trades',
+            symbol: `t${arg}`,
+          });
+          ws.send(msg);
+
+          ws.addEventListener('message', listener);
+        } catch {
+          // no-op in case `cacheEntryRemoved` resolves before `cacheDataLoaded`,
+          // in which case `cacheDataLoaded` will throw
+        }
+        // cacheEntryRemoved will resolve when the cache subscription is no longer active
+        await cacheEntryRemoved;
+        // perform cleanup steps once the `cacheEntryRemoved` promise resolves
+        ws.close();
+      },
+    }),
+    getOrderBook: builder.query({
+      query: pair => `book/t${pair}/P0`,
+    }),
+    getCandles: builder.query({
+      query: pair => `candles/trade:1m:t${pair}/hist`,
+    }),
   }),
 });
 
@@ -20,4 +72,7 @@ export const bitfinexApi = createApi({
 export const {
   useGetListCurrenciesQuery,
   useGetListPairExchangeQuery,
+  useGetTradesQuery,
+  useGetOrderBookQuery,
+  useGetCandlesQuery,
 } = bitfinexApi;

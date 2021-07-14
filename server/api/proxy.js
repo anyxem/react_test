@@ -16,7 +16,6 @@ async function request(path) {
 }
 
 ApiRouter.get('/:request(*)', async function(req, res) {
-  console.log(req.params.request);
   const data = await request(req.params.request);
   res.json(data);
 });
