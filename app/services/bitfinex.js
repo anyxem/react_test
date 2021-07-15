@@ -16,7 +16,7 @@ export const bitfinexApi = createApi({
       query: pair => `trades/t${pair}/hist`,
       async onCacheEntryAdded(
         arg,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved, dispatch },
       ) {
         // create a websocket connection when the cache subscription starts
         const ws = new WebSocket('wss://api-pub.bitfinex.com/ws/2');
@@ -28,7 +28,16 @@ export const bitfinexApi = createApi({
           // update our query result with the received message
           const listener = event => {
             const data = JSON.parse(event.data);
-            // if (data.channel !== arg) return;
+            // store curresponding channel id
+            if (data.event === 'subscribed') {
+              dispatch({
+                type: 'bitfinexApi/websocket/subscribe',
+                payload: {
+                  query: `getTrades("${arg}")`,
+                  channelId: data.chanId,
+                },
+              });
+            }
 
             if (data[1] === 'hb') return;
 
@@ -117,3 +126,14 @@ export const {
   useGetOrderBookQuery,
   useGetCandlesQuery,
 } = bitfinexApi;
+
+export const bitfinexAddonReducer = (state = {}, action) => {
+  switch (action.type) {
+    case 'bitfinexApi/websocket/subscribe':
+      console.log(action, '-----');
+      console.log(state);
+      return state;
+    default:
+      return state;
+  }
+};

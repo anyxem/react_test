@@ -4,7 +4,6 @@ import history from 'utils/history';
 import { bitfinexApi } from 'services/bitfinex';
 
 const initialState = {};
-
 export const store = configureStore({
   initialState,
   reducer: {
